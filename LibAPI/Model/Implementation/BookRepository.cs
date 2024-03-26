@@ -31,8 +31,7 @@ public class BookRepository :  IBookRepository
         if (_context.Books.Contains(bookToUpdate))
         {   
             _context.Update(bookToUpdate);
-            _context.SaveChanges();
-            
+            _context.SaveChanges(); 
         }
     }
 
@@ -63,7 +62,7 @@ public class BookRepository :  IBookRepository
 
     public string SetCoverPath(IFormFile cover)
     {   
-        string path = "..\\Assets\\" + cover.FileName;
+        string path = "Assets\\" + cover.FileName;
         using (var fileStream = new FileStream(path, FileMode.Create))
         {
             cover.CopyTo(fileStream);
