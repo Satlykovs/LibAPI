@@ -35,9 +35,9 @@ public class LibManager : ILibManager
     {
         return _bookRepository.GetBookById(id);
     }
-    public string SetCoverPath(IFormFile cover, int id)
+    public string SetCoverPath(IFormFile cover)
     {
-        return _bookRepository.SetCoverPath(cover, id);
+        return _bookRepository.SetCoverPath(cover);
     }
 
     public Book ConvertToBook(BookForAPI bfa)

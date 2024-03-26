@@ -30,7 +30,7 @@ public class BookController : ControllerBase
     [HttpPost]
     public void AddBook([FromForm]FormDataModel data)
     {
-        string path = _libManager.SetCoverPath(data.Cover, data.DataBook.ID);
+        string path = _libManager.SetCoverPath(data.Cover);
         Book book = _libManager.ConvertToBook(data.DataBook);
         book.CoverPath = path;
         _libManager.AddBook(book);
@@ -42,7 +42,7 @@ public class BookController : ControllerBase
     {
         Book bookToUpdate = _libManager.ConvertToBook(data.DataBook);
 
-        bookToUpdate.CoverPath = _libManager.SetCoverPath(data.Cover, data.DataBook.ID);
+        bookToUpdate.CoverPath = _libManager.SetCoverPath(data.Cover);
         bookToUpdate.ID = id;
         _libManager.UpdateBook(id, bookToUpdate);
     }

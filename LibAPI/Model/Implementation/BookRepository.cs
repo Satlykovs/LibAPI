@@ -46,6 +46,7 @@ public class BookRepository :  IBookRepository
             {
                 FileInfo info = new FileInfo(book.CoverPath);
                 IFormFile cover = new FormFile(fileStream, 0, info.Length, "cover", Path.GetFileName(book.CoverPath));
+
                 BookForAPI bookForAPI = book;
                 FormDataModel new_data = new FormDataModel {Cover = cover, DataBook = bookForAPI};
                 data.Add(new_data);
@@ -60,14 +61,9 @@ public class BookRepository :  IBookRepository
         return _context.Books.FirstOrDefault(b => b.ID == id);
     }
 
-    public string SetCoverPath(IFormFile cover, int id)
+    public string SetCoverPath(IFormFile cover)
     {   
         string path = "..\\Assets\\" + cover.FileName;
-        string delete_path = _context.Books.FirstOrDefault(b => b.ID == id).CoverPath;
-        if (File.Exists(delete_path))
-        {
-            File.Delete(delete_path);
-        }
         using (var fileStream = new FileStream(path, FileMode.Create))
         {
             cover.CopyTo(fileStream);

@@ -60,3 +60,4 @@ C:\Users\Sanjar\Desktop\LibAPI\LibAPI\obj\Debug\net8.0\refint\LibAPI.dll
 C:\Users\Sanjar\Desktop\LibAPI\LibAPI\obj\Debug\net8.0\LibAPI.pdb
 C:\Users\Sanjar\Desktop\LibAPI\LibAPI\obj\Debug\net8.0\LibAPI.genruntimeconfig.cache
 C:\Users\Sanjar\Desktop\LibAPI\LibAPI\obj\Debug\net8.0\ref\LibAPI.dll
+C:\Users\Sanjar\Desktop\LibAPI\LibAPI\obj\Debug\net8.0\LibAPI.sourcelink.json

@@ -7,6 +7,6 @@ public interface IBookRepository
     public void AddBook(Book book);
     public void DeleteBook(int id);
     public void UpdateBook(int id, Book bookToUpdate);
-    public string SetCoverPath(IFormFile cover, int id);
+    public string SetCoverPath(IFormFile cover);
     public Book ConvertToBook(BookForAPI bfa);
 }
