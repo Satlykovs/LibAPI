@@ -28,40 +28,52 @@ public class BookRepository :  IBookRepository
 
     public void UpdateBook(int id, Book bookToUpdate)
     {
-        if (_context.Books.Contains(bookToUpdate))
+        Book book = _context.Books.FirstOrDefault(b => b.ID == id);
+        if  (book != null)
         {   
-            _context.Update(bookToUpdate);
+            book.Name = bookToUpdate.Name;
+            book.Author = bookToUpdate.Author;
+            book.Genre = bookToUpdate.Genre;
+            book.CreatingYear = bookToUpdate.CreatingYear;
+            book.PublishingYear = bookToUpdate.PublishingYear;
+            book.Description = bookToUpdate.Description;
+
             _context.SaveChanges(); 
         }
     }
 
-    public List<FormDataModel> GetAllBooks()
+    public List<BookForAPI> GetAllBooks()
     {
-        List<FormDataModel> data = [];
         List<Book> books = _context.Books.ToList();
-        foreach (var book in books)
-        {
-            using (FileStream fileStream = new FileStream(book.CoverPath, FileMode.Open))
-            {
-                FileInfo info = new FileInfo(book.CoverPath);
-                IFormFile cover = new FormFile(fileStream, 0, info.Length, "cover", Path.GetFileName(book.CoverPath));
+        return books.Cast<BookForAPI>().ToList();
 
-                BookForAPI bookForAPI = book;
-                FormDataModel new_data = new FormDataModel {Cover = cover, DataBook = bookForAPI};
-                data.Add(new_data);
-            }
-
-        }
-        return data;
+        
     }
 
-    public Book GetBookById(int id)
+    public BookForAPI GetBookById(int id)
     {
-        return _context.Books.FirstOrDefault(b => b.ID == id);
+        Book book = _context.Books.FirstOrDefault(b => b.ID == id);
+        BookForAPI bookForAPI = new BookForAPI
+        {
+            ID = book.ID,
+            Name = book.Name,
+            Author = book.Author,
+            Genre = book.Genre,
+            CreatingYear = book.CreatingYear,
+            PublishingYear = book.PublishingYear,
+            Description = book.Description
+        };
+        return bookForAPI;
     }
 
-    public string SetCoverPath(IFormFile cover)
+    public string SetCoverPath(IFormFile cover, int id)
     {   
+        Book book = _context.Books.FirstOrDefault(b => b.ID == id);
+        if (book != null)
+        {
+            string oldPath = book.CoverPath;
+            File.Delete(oldPath);
+        }
         string path = "Assets\\" + cover.FileName;
         using (var fileStream = new FileStream(path, FileMode.Create))
         {
@@ -77,5 +89,20 @@ public class BookRepository :  IBookRepository
         Book book = JsonSerializer.Deserialize<Book>(JsonSerializer.Serialize<BookForAPI>(bfa));
         return book;
     }
+
+    public void AddReview(string reviewText, int bookID)
+    {
+        Review review = new Review
+        {
+            ReviewText = reviewText,
+            BookID = bookID
+        };
+        _context.Reviews.Add(review);
+        _context.SaveChanges();
+    }
     
+    public List<string> GetReviews(int bookID)
+    {
+        return _context.Reviews.Where(r => r.BookID == bookID).Select(r => r.ReviewText).ToList(); 
+    }
 }

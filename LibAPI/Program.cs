@@ -18,7 +18,8 @@ builder.Services.AddSingleton<ILibManager>(provider =>
     libContext.Database.EnsureCreated();
     IBookRepository bookRepository = new BookRepository(libContext);
     IUserLibraryRepository userLibraryRepository = new UserLibraryRepository(libContext);
-    ILibManager libManager = new LibManager(bookRepository, userLibraryRepository);
+    IExchangeRepository exchangeRepository = new ExchangeRepository(libContext);
+    ILibManager libManager = new LibManager(bookRepository, userLibraryRepository, exchangeRepository);
 
     return libManager;
 

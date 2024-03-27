@@ -15,9 +15,13 @@ public class UserLibraryRepository : IUserLibraryRepository
         {   
             if (_context.Books.FirstOrDefault(b => b.ID == bookID) != null)
             {
-                UserBook book = new UserBook(userID, bookID);
-                _context.UserBooks.Add(book);
-                _context.SaveChanges();
+                    UserBook book = new UserBook(userID, bookID);
+                    _context.UserBooks.Add(book);
+                    if (_context.Users.FirstOrDefault(u => u.UserID == userID) == null)
+                    {
+                        _context.Users.Add(new User(userID));
+                    }
+                    _context.SaveChanges();
             }
         }   
     }
@@ -32,10 +36,10 @@ public class UserLibraryRepository : IUserLibraryRepository
         }
     }
     
-    public List<Book> GetAllUserBooks(int userID)
+    public List<BookForAPI> GetAllUserBooks(int userID)
     {
         List<int> bookIDs = _context.UserBooks.Where(b => b.UserID == userID).Select(b => b.BookID).ToList();
-        return _context.Books.Where(b=> bookIDs.Contains(b.ID)).ToList();
+        return _context.Books.Where(b=> bookIDs.Contains(b.ID)).ToList().Cast<BookForAPI>().ToList();
     }
 
 }
